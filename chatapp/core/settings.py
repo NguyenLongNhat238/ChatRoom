@@ -26,8 +26,8 @@ SECRET_KEY = "django-insecure-^sd(6$cnk6^3409ll7((=_ozgrn3$e6_sx@x401n-5)!m9b4v8
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
-
+CORS_ALLOW_ALL_ORIGINS = True
+AUTH_USER_MODEL = "user.User"
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,11 +39,17 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    
+    "rest_framework",
+    "oauth2_provider",
+    "corsheaders",
+    "user",
+    "social_auth",
     "chat",
+    "test_app",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -144,3 +150,10 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
+    )
+}

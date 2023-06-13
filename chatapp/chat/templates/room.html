@@ -44,6 +44,23 @@
             </div>
             {{ room.name|json_script:"roomName" }}
         </div>
+        <script>
+            var staticUrl = "{% static 'audio/sms_notification.mp3' %}";
+            var currentUser = "{{ user.username }}";
+            let chatLog = document.querySelector("#chatLog");
+            fetch("http://localhost:8000/chat/api/get-messages?name={{room.name}}")
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    data.forEach(message => {
+                        chatLog.value += message.user + ": " + message.content + "\n";
+                    });
+                    chatLog.scrollTop = chatLog.scrollHeight;
+                })
+                .catch(error => console.error(error));
+            
+            console.log(currentUser); 
+        </script>
         <script src="{% static 'room.js' %}"></script>
     </body>
 </html>

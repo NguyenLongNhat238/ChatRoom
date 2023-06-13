@@ -4,10 +4,11 @@ console.log("Sanity check from room.js.");
 
 const roomName = JSON.parse(document.getElementById('roomName').textContent);
 
-let chatLog = document.querySelector("#chatLog");
+
 let chatMessageInput = document.querySelector("#chatMessageInput");
 let chatMessageSend = document.querySelector("#chatMessageSend");
 let onlineUsersSelector = document.querySelector("#onlineUsersSelector");
+
 
 // adds a new option to 'onlineUsersSelector'
 function onlineUsersSelectorAdd(value) {
@@ -45,6 +46,19 @@ chatMessageSend.onclick = function () {
 
 let chatSocket = null;
 
+// Tạo một đối tượng Audio với đường dẫn tới file âm thanh thông báo
+// var autdio_path = staticUrl + 'audio/sms_notification.mp3';
+var notificationSound = new Audio(staticUrl);
+
+// Hàm để phát âm thanh thông báo
+function playNotificationSound() {
+    // Kiểm tra xem âm thanh có được tải thành công hay không
+    if (notificationSound.readyState === HTMLMediaElement.HAVE_ENOUGH_DATA) {
+        notificationSound.play();
+    }
+}
+
+
 function connect() {
     chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + roomName + "/");
 
@@ -67,6 +81,9 @@ function connect() {
         switch (data.type) {
             case "chat_message":
                 chatLog.value += data.user + ": " + data.message + "\n";  // new
+                if (data.user !== currentUser) {
+                    notificationSound.play(); // Phát âm thanh thông báo
+                } // Phát âm thanh thông báo
                 break;
 
             case "user_list":

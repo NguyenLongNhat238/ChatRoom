@@ -7,4 +7,5 @@ from . import views
 urlpatterns = [
     path("", views.index_view, name="chat-index"),
     path("<str:room_name>/", views.room_view, name="chat-room"),
+    path("api/get-messages",view=views.get_messages, name="get-message")
 ]
