@@ -21,5 +21,7 @@ urlpatterns = [
     path("chat/", include("chat.urls")),  # new
     path("admin/", admin.site.urls),
     path("api/", include("test_app.urls")),
+    path("api/", include("user.urls")),
+    path("api/", include("social_auth.urls")),
     path("o/", include("oauth2_provider.urls", namespace="oauth2_provider")),
 ]
